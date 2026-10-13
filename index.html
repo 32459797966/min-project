@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>缝纫机 · 目送</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#d6c7b5;transition:background .4s}
+body.dark{background:#00365b}
+#wrap{position:fixed;left:50%;top:50%;width:640px;height:1236px;transform-origin:0 0;overflow:hidden}
+.page{position:absolute;left:0;top:0;width:640px;height:1236px;display:none;overflow:hidden}
+.page.on{display:block}
+.bg,.abs{position:absolute;display:block}
+.bg{left:0;top:0;width:640px;height:1236px}
+.hit{position:absolute;background:transparent;border:0;outline:0;cursor:pointer}
+.fadein{opacity:0}
+.page.on .fadein{animation:fi .9s ease forwards;animation-delay:var(--d,0s)}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+/* 页面1 幕布加载 */
+#p1{background:#d6c7b5}
+.bar{position:absolute;left:150px;width:340px;height:16px;border-radius:8px;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;height:100%;width:0}
+#barA{top:600px;background:#bcd3e6}
+#barA i{background:#00365b}
+#barB{top:630px;background:#d9e6f1}
+#barB i{background:#7fa8c9}
+.page.on #barA i{animation:grow 3s ease-in-out .2s forwards}
+.page.on #barB i{animation:grow 3s ease-in-out .5s forwards}
+@keyframes grow{from{width:0}to{width:100%}}
+/* 页面2 */
+#p2{background:#00365b}
+#p2 .cover{animation:none;opacity:1;pointer-events:none}
+.page.on #p2cover{animation:fo 1s linear forwards}
+@keyframes fo{from{opacity:1}to{opacity:0}}
+.glow{filter:drop-shadow(0 0 4px rgba(0,54,91,.95)) drop-shadow(0 0 2px rgba(0,54,91,.9))}
+/* 页面3 眼泪 */
+#p3{background:#00365b}
+#tear{opacity:0}
+.page.on #tear{animation:tear 5s linear forwards}
+@keyframes tear{0%,60%{opacity:0;transform:translateY(0)}62%{opacity:1;transform:translateY(0)}100%{opacity:1;transform:translateY(120px)}}
+/* 页面4 */
+#p4{background:#d6c7b5}
+.page.on #t5{animation:fi .5s linear forwards}
+#p5{background:#d6c7b5}
+/* 音乐按钮 */
+#music{position:absolute;right:22px;top:22px;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.7);z-index:50;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;cursor:pointer;backdrop-filter:blur(4px)}
+#music.spin span{display:inline-block;animation:sp 3s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#tip{position:absolute;left:0;right:0;bottom:60px;text-align:center;font:26px/1.4 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#00365b;letter-spacing:4px;z-index:40;opacity:0;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.9}}
+#loadmask{position:fixed;inset:0;background:#d6c7b5;z-index:99;display:flex;align-items:center;justify-content:center;font:16px sans-serif;color:#8a7a68;transition:opacity .4s}
+</style>
+</head>
+<body>
+<div id="loadmask">加载中…</div>
+<div id="wrap">
+
+  <!-- 页面1：加载页 -->
+  <section class="page" id="p1" data-dark="0">
+    <img class="bg" src="img/loading.webp" alt="">
+    <div class="bar" id="barA"><i></i></div>
+    <div class="bar" id="barB"><i></i></div>
+  </section>
+
+  <!-- 页面2：相框与第一段文字 -->
+  <section class="page" id="p2" data-dark="1">
+    <img class="bg" src="img/p2_2.webp" alt="">
+    <img class="bg cover" id="p2cover" src="img/p2_1.webp" alt="">
+    <img class="abs fadein glow" src="img/t1.png" style="left:88px;top:800px;width:464px;--d:2s" alt="">
+    <img class="abs fadein glow" src="img/t2.png" style="left:60px;top:352px;width:192px;--d:3s" alt="">
+    <button class="hit" data-go="3" style="left:60px;top:440px;width:340px;height:300px" aria-label="点击相框"></button>
+  </section>
+
+  <!-- 页面3：点击眼泪 -->
+  <section class="page" id="p3" data-dark="1">
+    <img class="bg" src="img/p3_1.webp" alt="">
+    <img class="abs fadein" src="img/t3.png" style="left:110px;top:130px;width:420px;--d:2s" alt="">
+    <img class="abs fadein glow" src="img/t4.png" style="left:420px;top:800px;width:172px;--d:5s" alt="">
+    <img class="abs" id="tear" src="img/tear.png" style="left:496px;top:560px;width:44px" alt="">
+    <button class="hit" data-go="4" style="left:430px;top:540px;width:170px;height:330px" aria-label="点击眼泪"></button>
+  </section>
+
+  <!-- 页面4：《目送》 -->
+  <section class="page" id="p4" data-dark="0">
+    <img class="bg" src="img/p4.webp" alt="">
+    <img class="abs" id="t5" src="img/t5.png" style="left:42px;top:280px;width:555px;opacity:0" alt="">
+    <button class="hit" data-go="5" style="left:0;top:0;width:640px;height:1236px" aria-label="下一页"></button>
+  </section>
+
+  <!-- 页面5：结尾 -->
+  <section class="page" id="p5" data-dark="0">
+    <img class="bg" src="img/p4.webp" alt="">
+    <img class="abs fadein" id="t6" src="img/t6.png" style="left:74px;top:360px;width:492px;--d:2s" alt="">
+    <img class="abs fadein" src="img/t7.png" style="left:250px;top:540px;width:104px;--d:3s" alt="">
+    <button class="hit" id="link" style="left:60px;top:340px;width:520px;height:180px" aria-label="听歌"></button>
+  </section>
+
+  <div id="music" class="spin" title="音乐"><span>♪</span></div>
+  <div id="tip">轻触屏幕 · 开启音乐</div>
+</div>
+<audio id="bgm" src="music.mp3" loop preload="auto" playsinline></audio>
+
+<script>
+(function(){
+  var W=640,H=1236,wrap=document.getElementById('wrap');
+  function fit(){
+    var s=Math.min(innerWidth/W,innerHeight/H);
+    wrap.style.transform='scale('+s+') translate(-50%,-50%)';
+    wrap.style.transformOrigin='0 0';
+    wrap.style.left='50%';wrap.style.top='50%';
+    // translate in scaled space: use margins instead for precision
+    wrap.style.transform='scale('+s+')';
+    wrap.style.marginLeft=(-W*s/2)+'px';
+    wrap.style.marginTop=(-H*s/2)+'px';
+    wrap.style.left='50%';wrap.style.top='50%';
+  }
+  addEventListener('resize',fit);fit();
+
+  var cur=0,timer=null,pages={};
+  [1,2,3,4,5].forEach(function(i){pages[i]=document.getElementById('p'+i)});
+
+  function go(n){
+    clearTimeout(timer);
+    if(cur){pages[cur].classList.remove('on')}
+    var p=pages[n];
+    // 重启动画
+    void p.offsetWidth;
+    p.classList.add('on');
+    document.body.classList.toggle('dark',p.dataset.dark==='1');
+    cur=n;
+    if(n===1){timer=setTimeout(function(){go(2)},3900)} // 轨迹结束 → 页面2
+  }
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click',function(){go(+b.dataset.go)});
+  });
+  document.getElementById('link').addEventListener('click',function(){
+    window.open('https://music.163.com/#/search/m/?s='+encodeURIComponent('缝纫机 刘昊霖')+'&type=1','_blank');
+  });
+
+  /* 背景音乐 */
+  var a=document.getElementById('bgm'),btn=document.getElementById('music'),tip=document.getElementById('tip'),playing=false,asked=false;
+  function setUI(){btn.classList.toggle('spin',playing);btn.style.opacity=playing?'1':'.55'}
+  function tryPlay(){var p=a.play();if(p&&p.then){p.then(function(){playing=true;tip.style.display='none';setUI()}).catch(function(){playing=false;tip.style.opacity='';tip.style.animationPlayState='running';setUI()})}}
+  btn.addEventListener('click',function(e){e.stopPropagation();if(a.paused){tryPlay()}else{a.pause();playing=false;setUI()}});
+  function firstGesture(){if(a.paused&&!asked){asked=true;tryPlay()}}
+  ['touchstart','click'].forEach(function(ev){document.addEventListener(ev,firstGesture,{once:true,passive:true})});
+  document.addEventListener('WeixinJSBridgeReady',function(){tryPlay()},false);
+  a.addEventListener('playing',function(){playing=true;tip.style.display='none';setUI()});
+
+  /* 预加载 */
+  var imgs=[].slice.call(document.querySelectorAll('img')),n=0;
+  function done(){n++;if(n>=imgs.length){start()}}
+  imgs.forEach(function(im){if(im.complete){done()}else{im.onload=im.onerror=done}});
+  var started=false;
+  function start(){
+    if(started)return;started=true;
+    var m=document.getElementById('loadmask');m.style.opacity=0;setTimeout(function(){m.remove()},450);
+    go(1);tryPlay();
+  }
+  setTimeout(start,6000);
+  setUI();
+})();
+</script>
+</body>
+</html>
